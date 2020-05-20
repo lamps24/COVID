@@ -129,7 +129,14 @@ cases['date'] = cases['date'].str[5:8]
 ### Merge ###
 #############
 
+# merge
 merged = data.merge(cases, left_on=['region', 'date'], right_on=['state', 'date'])
+
+# fill in missing mobility data using the previous day from the state
+merged = merged.sort_values(by=['state', 'days_from_jan13'])
+merged.driving_mobility = merged.driving_mobility.fillna(method='ffill')
+
+# fill rest of nan with 0
 merged = merged.fillna(0)
 
 # create dummies
