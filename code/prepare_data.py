@@ -1,3 +1,10 @@
+###################################################################
+# prepare_data.py
+# 
+# Loads Apple's mobility data, restricts to US States, and 
+# merges to state-level daily case data. Creates a "days_from_jan13"
+# variable and set of dummies
+####################################################################
 import pandas as pd
 
 # load data
@@ -74,6 +81,7 @@ us_state_abbrev = {
     'Wyoming': 'WY'
 }
 
+
 ###########################
 ### Apple mobility data ###
 ###########################
@@ -116,9 +124,12 @@ data = data.rename(columns={"2020": "driving_mobility"})
 cases.date = cases.date.astype(str)
 cases['date'] = cases['date'].str[5:8]
 
+
 #############
 ### Merge ###
 #############
 
 merged = data.merge(cases, left_on=['region', 'date'], right_on=['state', 'date'])
 merged = merged.fillna(0)
+
+# create dummy
