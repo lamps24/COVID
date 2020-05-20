@@ -132,4 +132,8 @@ cases['date'] = cases['date'].str[5:8]
 merged = data.merge(cases, left_on=['region', 'date'], right_on=['state', 'date'])
 merged = merged.fillna(0)
 
-# create dummy
+# create dummies
+dummies = pd.get_dummies(merged.days_from_jan13)
+merged = pd.concat([merged, dummies], axis=1)
+
+merged.to_csv('C:/Users/lamps/Documents/COVID/data/covid_research_file.csv', index=False)
